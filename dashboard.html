@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>barber-flow - لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1a1a1a; --gold: #d4af37; --bg: #f4f4f4; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        nav { background: var(--primary); padding: 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* واجهة تسجيل الدخول */
+        #loginSection { 
+            padding: 40px 20px; 
+            text-align: center; 
+            background: white; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
+        #loginSection h2 { font-size: 2rem; margin-bottom: 20px; }
+        input { 
+            width: 100%; 
+            padding: 16px; 
+            margin: 10px 0; 
+            border-radius: 10px; 
+            border: 1px solid #ddd; 
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .login-btn { 
+            width: 100%; 
+            padding: 16px; 
+            background: var(--gold); 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            cursor: pointer;
+        }
+
+        /* حاوية لوحة التحكم */
+        .dashboard-container { 
+            width: 100%; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            display: none; 
+        }
+        .status-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-right: 6px solid #2e7d32;
+        }
+        .action-btn { 
+            width: 100%; 
+            padding: 15px; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            margin-top: 15px; 
+            font-family: 'Cairo';
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span>لوحة التحكم ✂️</span>
+        <a href="index.html" style="color:var(--gold); text-decoration:none; font-weight:bold;">الرئيسية</a>
+    </nav>
+
+    <div id="loginSection">
+        <h2>تسجيل دخول الحلاقين</h2>
+        <input type="tel" id="loginPhone" placeholder="رقم الهاتف المسجل">
+        <input type="password" id="loginPass" placeholder="كلمة المرور">
+        <button class="login-btn" id="loginBtn">دخول</button>
+    </div>
+
+    <div class="dashboard-container" id="mainDashboard">
+        <h2 id="welcomeName">صالونك المفضل</h2>
+        <div class="status-card">
+            <p>حالة الحساب: <strong style="color:#2e7d32;">نشط</strong></p>
+            <p>التقييم العام: ⭐⭐⭐⭐⭐</p>
+        </div>
+        
+        <h3 style="margin-top:30px;">الإجراءات السريعة</h3>
+        <button class="action-btn" onclick="alert('قريباً')">📸 تحديث معرض الصور</button>
+        <button class="action-btn" onclick="alert('قريباً')">📅 عرض المواعيد القادمة</button>
+        <button class="action-btn" style="background:#cc0000; margin-top:30px;" onclick="localStorage.removeItem('loggedBarber'); location.reload();">تسجيل الخروج</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyAeOxiKYc-DLSe5VnswhdkwVIwCyL6LbSg", 
+            authDomain: "barerflow.firebaseapp.com", 
+            projectId: "barerflow", 
+            appId: "1:860226335215:web:d5d5c684c8cd781833861a" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const saved = localStorage.getItem('loggedBarber');
+        if(saved) { showDash(saved); }
+
+        document.getElementById('loginBtn').onclick = async () => {
+            const phone = document.getElementById('loginPhone').value;
+            const pass = document.getElementById('loginPass').value;
+            const q = query(collection(db, "barbers"), where("phone", "==", phone));
+            const snap = await getDocs(q);
+            
+            let found = false;
+            snap.forEach(doc => {
+                if(doc.data().password === pass) {
+                    found = true;
+                    localStorage.setItem('loggedBarber', doc.data().shopName);
+                    showDash(doc.data().shopName);
+                }
+            });
+            if(!found) alert("رقم الهاتف أو كلمة المرور غير صحيحة");
+        };
+
+        function showDash(name) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('mainDashboard').style.display = 'block';
+            document.getElementById('welcomeName').innerText = "صالون: " + name;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>barber-flow | وجهتك لأفضل حلاقة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1a1a1a; --gold: #d4af37; --white: #ffffff; }
+        body { margin: 0; font-family: 'Cairo', sans-serif; background: var(--primary); color: var(--white); overflow-x: hidden; }
+        .hero { 
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; padding: 20px; box-sizing: border-box;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center;
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--gold); }
+        p { font-size: 1.1rem; margin-bottom: 30px; max-width: 500px; }
+        .main-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 350px; }
+        .btn { padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: 0.3s; text-align: center; }
+        .btn-customer { background: var(--gold); color: var(--primary); }
+        .btn-barber { border: 2px solid var(--gold); color: var(--gold); }
+        /* زر دخول الحلاقين المسجلين */
+        .login-link { margin-top: 40px; color: white; font-size: 1rem; text-decoration: underline; opacity: 0.8; padding: 10px; }
+        
+        .features { padding: 60px 20px; background: var(--white); color: var(--primary); text-align: center; }
+        .feature-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 40px; }
+        @media (min-width: 600px) { .feature-grid { grid-template-columns: repeat(3, 1fr); } }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <h1>barber-flow ✂️</h1>
+        <p>المنصة الذكية التي تجمع بين أرقى صالونات الحلاقة وأرقى الزبائن في مكان واحد.</p>
+        <div class="main-buttons">
+            <a href="customer.html" class="btn btn-customer">🔍 ابحث عن حلاق الآن</a>
+            <a href="register.html" class="btn btn-barber">💈 أنا حلاق (سجل صالونك)</a>
+        </div>
+        <a href="dashboard.html" class="login-link">دخول الحلاقين المسجلين 🔑</a>
+    </section>
+    
+    <section class="features">
+        <h2>لماذا تختار barber-flow؟</h2>
+        <div class="feature-grid">
+            <div class="feature-item"><h3>حجز سريع</h3><p>احجز موعدك في ثوانٍ معدودة.</p></div>
+            <div class="feature-item"><h3>أفضل الصالونات</h3><p>نضم نخبة الحلاقين في منطقتك.</p></div>
+            <div class="feature-item"><h3>سهولة الوصول</h3><p>تواصل مباشر عبر الواتساب.</p></div>
+        </div>
+    </section>
+</body>
+</html>
